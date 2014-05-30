@@ -1,14 +1,17 @@
 /* 
-Simple Diff for Python version 1.0 (ported to javascript)
+Simple Diff for version 1.0 (ported to JavaScript)
 
 Annotate two versions of a list with the values that have been
 changed between the versions, similar to unix's `diff` but with
-a dead-simple Python interface.
+a dead-simple JavaScript interface.
 
-(C) Paul Butler 2008-2012 <http://www.paulbutler.org/>
+JavaScript port by DJ Mountney (twk3) based on code by Paul Butler.
+
+(C) 2008-2012 <http://www.paulbutler.org/>
 May be used and distributed under the zlib/libpng license
 <http://www.opensource.org/licenses/zlib-license.php>
 */
+
 var diff = function(before, after) {
     /*
         Find the differences between two lists. Returns a list of pairs, where the
@@ -207,8 +210,7 @@ var checkDiff = function(before, after) {
     before  = [before];
     after   = [after];
 
-    var console = window.console || {assert: function(){}},
-        result  = diff(before, after),
+    var result  = diff(before, after),
         _before = [],
         _after  = [], i;
 
@@ -229,3 +231,14 @@ var checkDiff = function(before, after) {
     console.assert(JSON.stringify(before) === JSON.stringify(_before), 'Expected', before, 'got', _before);
     console.assert(JSON.stringify(after)  === JSON.stringify(_after),  'Expected', after,  'got', _after);
 };
+
+if (typeof(module) === 'object') {
+  // Export functionality if used as a node.js or requirejs module
+  module.exports = {
+    diff: diff,
+    htmlDiff: htmlDiff,
+    stringDiff: stringDiff,
+    checkDiff: checkDiff
+  };
+}
+
